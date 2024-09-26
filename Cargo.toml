@@ -1,0 +1,57 @@
+[package]
+name = "edge-executor-bug"
+version = "0.1.0"
+authors = ["Florian Köhler <fko@kuptec.de>"]
+edition = "2021"
+resolver = "2"
+
+[[bin]]
+name = "edge-executor-bug"
+harness = false            # do not use the built in cargo test harness -> resolve rust-analyzer errors
+
+[profile.release]
+opt-level = 3
+lto = true
+
+[profile.dev]
+debug = true    # Symbols are nice and they don't increase the size on Flash
+opt-level = "z"
+
+[features]
+default = ["std", "embassy", "esp-idf-svc/native"]
+
+pio = ["esp-idf-svc/pio"]
+std = ["alloc", "esp-idf-svc/binstart", "esp-idf-svc/std"]
+alloc = ["esp-idf-svc/alloc"]
+nightly = ["esp-idf-svc/nightly"]
+experimental = ["esp-idf-svc/experimental"]
+embassy = [
+    "esp-idf-svc/embassy-sync",
+    "esp-idf-svc/critical-section",
+    "esp-idf-svc/embassy-time-driver",
+]
+
+[dependencies]
+async-executor = "1.13"
+#emwait = { version = "0.3", tag = "0.3.0", git = "https://github.com/fko-kuptec/emwait.git" }
+edge-executor = { version = "0.4", features = ["unbounded"] }
+embassy-time = { version = "0.3", features = ["generic-queue"] }
+esp-idf-hal = "0.44"
+esp-idf-svc = { version = "0.49", features = [
+    "critical-section",
+    "embassy-time-driver",
+] }
+futures-executor = "0.3"
+futures-util = "0.3"
+futures-lite = "2.3"
+anyhow = "1.0"
+async-io-mini = "0.2.0"
+log = { version = "0.4", default-features = false }
+tokio = { version = "1.4", features = ["sync"] }
+
+[build-dependencies]
+embuild = "0.32.0"
+
+[patch.crates-io]
+esp-idf-svc = { git = "https://github.com/esp-rs/esp-idf-svc.git" }
+esp-idf-hal = { git = "https://github.com/esp-rs/esp-idf-hal.git" }

@@ -1,0 +1,16 @@
+# Rust often needs a bit of an extra main task stack size compared to C (the default is 3K)
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=8000
+
+# Set maximum clock speed for cpu
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ=y
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+
+#########
+# PSRAM #
+#########
+CONFIG_ESP32_SPIRAM_SUPPORT=y
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y
+CONFIG_SPIRAM_USE_CAPS_ALLOC=y
+CONFIG_SPIRAM_BOOT_INIT=y
